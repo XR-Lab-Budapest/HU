@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spatial Logic — Emberi felügyelet mérése AI-rendszerekben</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fafafa;
+    --surface: #ffffff;
+    --surface-2: #f0f0f0;
+    --line: rgba(0,0,0,0.09);
+    --text: #17181a;
+    --text-muted: #6b6d70;
+    --shadow-color: rgba(20,20,22,0.14);
+    --font-display: 'DM Serif Display', serif;
+    --font-body: 'DM Sans', sans-serif;
+    --font-mono: 'DM Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; }
+
+  :focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 3px;
+  }
+
+  .wrap {
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- HERO ---------- */
+
+  .hero {
+    position: relative;
+    padding: 96px 0 64px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-chart {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.10;
+    pointer-events: none;
+  }
+
+  .hero-chart svg { width: 100%; height: 100%; }
+
+  .hero-chart path {
+    fill: none;
+    stroke: #3a3a3d;
+    stroke-width: 1.5;
+    stroke-dasharray: 1400;
+    stroke-dashoffset: 1400;
+    animation: draw 2.6s ease-out forwards;
+  }
+
+  @keyframes draw {
+    to { stroke-dashoffset: 0; }
+  }
+
+  .hero-inner { position: relative; z-index: 1; }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(30px, 5vw, 44px);
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    margin-bottom: 22px;
+    color: var(--text);
+  }
+
+  .hero-sub {
+    font-size: 17px;
+    color: var(--text-muted);
+    max-width: 560px;
+    margin-bottom: 36px;
+  }
+
+  .credential-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .credential {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 100px;
+    padding: 6px 14px;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px -6px var(--shadow-color);
+  }
+
+  .credential strong { color: var(--text); font-weight: 600; }
+
+  /* ---------- PROMPT ---------- */
+
+  .prompt {
+    padding: 56px 0 28px;
+    text-align: center;
+  }
+
+  .prompt p {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  /* ---------- TOGGLE (signature element) ---------- */
+
+  .selector {
+    position: sticky;
+    top: 12px;
+    z-index: 10;
+    padding-bottom: 8px;
+  }
+
+  .selector-panel {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 6px;
+    display: flex;
+    gap: 4px;
+    box-shadow: 0 18px 40px -20px var(--shadow-color), 0 2px 6px -2px var(--shadow-color);
+  }
+
+  .seg-btn {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-family: var(--font-body);
+    font-size: 13.5px;
+    font-weight: 500;
+    padding: 14px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
+    line-height: 1.3;
+  }
+
+  .seg-btn:hover { color: var(--text); }
+
+  .seg-btn[aria-selected="true"] {
+    background: var(--surface);
+    color: var(--text);
+    box-shadow: 0 10px 24px -10px var(--shadow-color), inset 0 0 0 1px rgba(0,0,0,0.06);
+  }
+
+  .seg-btn .tag {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 4px;
+    color: var(--text);
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+
+  .seg-btn[aria-selected="true"] .tag { opacity: 0.55; }
+
+  .reading {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: right;
+    padding: 8px 6px 0;
+    letter-spacing: 0.04em;
+  }
+
+  .reading span { color: var(--text); font-weight: 500; }
+
+  /* ---------- CONTENT PANELS ---------- */
+
+  .panels { padding: 28px 0 80px; }
+
+  .panel {
+    display: none;
+    animation: fade 0.4s ease;
+  }
+
+  .panel.active { display: block; }
+
+  @keyframes fade {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(24px, 4vw, 30px);
+    line-height: 1.28;
+    margin-bottom: 18px;
+    color: var(--text);
+  }
+
+  .panel .lede {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 28px;
+  }
+
+  .legal-anchor {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--text);
+    border-left: 2px solid var(--text);
+    padding: 4px 0 4px 14px;
+    margin-bottom: 28px;
+  }
+
+  .panel ul {
+    list-style: none;
+    margin-bottom: 32px;
+  }
+
+  .panel li {
+    position: relative;
+    padding-left: 20px;
+    margin-bottom: 14px;
+    font-size: 15px;
+    color: var(--text);
+  }
+
+  .panel li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--text-muted);
+  }
+
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 18px;
+    border-top: 1px solid var(--line);
+    padding-top: 26px;
+  }
+
+  .cta-btn {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 14.5px;
+    background: var(--text);
+    color: var(--surface);
+    border: none;
+    border-radius: 10px;
+    padding: 13px 22px;
+    cursor: pointer;
+    box-shadow: 0 12px 24px -10px var(--shadow-color);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 16px 28px -10px var(--shadow-color); }
+
+  .cta-note {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  /* ---------- FOOTER ---------- */
+
+  footer {
+    border-top: 1px solid var(--line);
+    padding: 40px 0 56px;
+  }
+
+  .footer-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--text-muted);
+  }
+
+  .footer-grid div span { display: block; color: var(--text); margin-bottom: 4px; }
+
+  @media (max-width: 640px) {
+    .selector-panel { flex-direction: column; }
+    .seg-btn { text-align: left; }
+    .hero { padding: 64px 0 44px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .hero-chart path { animation: none; stroke-dashoffset: 0; }
+    .panel { animation: none; }
+    .cta-btn:hover { transform: none; }
+  }
+</style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-chart" aria-hidden="true">
+      <svg viewBox="0 0 800 200" preserveAspectRatio="none">
+        <path d="M0,150 L60,146 L120,140 L180,128 L240,110 L300,80 L360,45 L400,30 L440,50 L500,95 L560,130 L620,150 L680,158 L740,160 L800,158" />
+      </svg>
+    </div>
+    <div class="wrap hero-inner">
+      <p class="eyebrow">Spatial Logic — Human Oversight Assessment</p>
+      <h1>Nem azt kérdezzük, hogy használtok-e AI-t.<br>Azt mérjük, mikor veszítitek el fölötte a kontrollt.</h1>
+      <p class="hero-sub">Folyamatos, számszerűsíthető emberi felügyelet-mérés AI-rendszerekhez — mérnöki pontossággal, checklist helyett.</p>
+      <div class="credential-strip">
+        <span class="credential"><strong>r = 0,82</strong> — BME validáció</span>
+        <span class="credential"><strong>EU AI Act</strong> — 14. cikk</span>
+        <span class="credential"><strong>MNB 13/2025</strong> (XII.3.)</span>
+        <span class="credential">Determinisztikus JSON Schema</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap prompt">
+    <p>Válaszd ki, hol tartotok</p>
+  </div>
+
+  <div class="wrap selector">
+    <div class="selector-panel" role="tablist" aria-label="Piaci szegmens választó">
+      <button class="seg-btn" role="tab" data-key="greyzone" aria-selected="false">
+        Még nem tudjuk, high-risk vagyunk-e
+        <span class="tag">Grey-zone</span>
+      </button>
+      <button class="seg-btn" role="tab" data-key="annexiii" aria-selected="false">
+        Tudjuk, hogy 2027-re kötelező lesz
+        <span class="tag">Annex III</span>
+      </button>
+      <button class="seg-btn" role="tab" data-key="mnb" aria-selected="false">
+        Banki / pénzügyi szektor vagyunk
+        <span class="tag">MNB</span>
+      </button>
+    </div>
+    <p class="reading" id="reading">MÓD: <span id="reading-value">—</span></p>
+  </div>
+
+  <div class="wrap panels">
+
+    <div class="panel" id="panel-greyzone" role="tabpanel">
+      <h2>A kimentés jogi feltétele: bizonyítható emberi felügyelet.</h2>
+      <p class="lede">Ha ma azt mondjátok, "nálunk ez nem high-risk", ennek explicit jogi feltétele van — és ez pontosan az, amit mérünk.</p>
+      <div class="legal-anchor">Art 6(3) · Art 6(4) · Art 49(2)</div>
+      <ul>
+        <li>Azonnali, nyilvános, dokumentáció-igényes kötelezettség terheli a self-assessment döntést.</li>
+        <li>A kimentés jogi feltétele explicit "proper human review" — ez a mi mérési tárgyunk.</li>
+        <li>Nem nagyvállalati compliance-transzformáció kell hozzá, hanem egy gyors, alátámasztott döntés.</li>
+      </ul>
+      <div class="cta-row">
+        <button class="cta-btn">Kérek egy gyors assessment ajánlatot</button>
+        <span class="cta-note">Válasz 2 munkanapon belül</span>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-annexiii" role="tabpanel">
+      <h2>1,5 év múlva golyóálló analitika kell. Aki most kezd mérni, előnyben lesz.</h2>
+      <p class="lede">2027. december 2-től az Annex III magas kockázatú rendszerekre a felügyeleti kötelezettség megkerülhetetlen — de a mérési történet nem pótolható utólag.</p>
+      <div class="legal-anchor">EU AI Act · Annex III · 2027.12.02</div>
+      <ul>
+        <li>Aki most építi fel a méréstörténetet, annak lesz mit bemutatnia — aki 2027 végén kezd, annak nincs retrospektív adata.</li>
+        <li>A rétegünk natural bundle-ként illeszkedik a már futó nagyvállalati compliance-transzformációkba.</li>
+        <li>Nem sürgetés — felkészülési előny egy olyan határidőre, ami biztosan jön.</li>
+      </ul>
+      <div class="cta-row">
+        <button class="cta-btn">Beszéljünk a felkészülésről</button>
+        <span class="cta-note">Tanácsadói partnerünkön keresztül is elérhető</span>
+      </div>
+    </div>
+
+    <div class="panel" id="panel-mnb" role="tabpanel">
+      <h2>MNB 13/2025: a határidő már lejárt.</h2>
+      <p class="lede">A banki AI-rendszerekre vonatkozó felügyeleti és auditkötelezettség független az EU-s csúszástól — és már aktív.</p>
+      <div class="legal-anchor">MNB 13/2025 (XII.3.) · Beadási határidő: 2026.06.30</div>
+      <ul>
+        <li>Emberi felügyelet és harmadik fél általi audit kötelező minden banki AI-rendszerre.</li>
+        <li>A mérés gyorsan bevethető — nincs szükség extra hardverre vagy szenzorra.</li>
+        <li>Konkrét, technikai válasz egy banki compliance vezetőnek, nem márkanév-alapú érv.</li>
+      </ul>
+      <div class="cta-row">
+        <button class="cta-btn">Kérek egy MNB-megfelelőségi konzultációt</button>
+        <span class="cta-note">Sensorless — meglévő telemetriából dolgozunk</span>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="wrap footer-grid">
+      <div><span>Validáció</span>BME Mechatronika Lab · AI Symposium / Springer</div>
+      <div><span>Módszertan</span>Determinisztikus JSON Schema · auditálható, reprodukálható</div>
+      <div><span>Kapcsolat</span>Spatial Logic — hu.spatiallogic.org</div>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    const buttons = Array.from(document.querySelectorAll('.seg-btn'));
+    const panels = {
+      greyzone: document.getElementById('panel-greyzone'),
+      annexiii: document.getElementById('panel-annexiii'),
+      mnb: document.getElementById('panel-mnb')
+    };
+    const readingValue = document.getElementById('reading-value');
+    const labels = { greyzone: 'GREY-ZONE', annexiii: 'ANNEX III', mnb: 'MNB / BANKI' };
+
+    function activate(key, updateUrl) {
+      buttons.forEach(btn => {
+        const selected = btn.dataset.key === key;
+        btn.setAttribute('aria-selected', selected ? 'true' : 'false');
+      });
+      Object.keys(panels).forEach(k => {
+        panels[k].classList.toggle('active', k === key);
+      });
+      readingValue.textContent = labels[key] || '—';
+      if (updateUrl) {
+        const url = new URL(window.location);
+        url.searchParams.set('ut', key);
+        window.history.replaceState({}, '', url);
+      }
+    }
+
+    buttons.forEach(btn => {
+      btn.addEventListener('click', () => activate(btn.dataset.key, true));
+    });
+
+    const params = new URLSearchParams(window.location.search);
+    const initial = params.get('ut');
+    if (initial && panels[initial]) {
+      activate(initial, false);
+    } else {
+      readingValue.textContent = '— VÁLASSZ —';
+    }
+  })();
+</script>
+
+</body>
+</html>
