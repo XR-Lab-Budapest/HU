@@ -7,6 +7,56 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://hu.spatiallogic.org/#organization",
+      "name": "Spatial Logic",
+      "url": "https://hu.spatiallogic.org/",
+      "email": "udeme@spatiallogic.org",
+      "description": "Folyamatos, számszerűsíthető emberi felügyelet-mérés AI-rendszerekhez az EU AI Act 14. cikke és az MNB 13/2025 (XII.3.) ajánlás alapján.",
+      "founder": { "@id": "https://hu.spatiallogic.org/#founder" }
+    },
+    {
+      "@type": "Person",
+      "@id": "https://hu.spatiallogic.org/#founder",
+      "name": "Udeme Etentuk",
+      "email": "udeme@spatiallogic.org",
+      "worksFor": { "@id": "https://hu.spatiallogic.org/#organization" }
+    },
+    {
+      "@type": "Service",
+      "name": "Grey-zone önbesorolási assessment",
+      "serviceType": "AI Act Art 6(3)/(4) self-assessment support",
+      "provider": { "@id": "https://hu.spatiallogic.org/#organization" },
+      "areaServed": "HU",
+      "url": "https://hu.spatiallogic.org/?ut=greyzone",
+      "description": "Bizonyítható emberi felügyelet dokumentációja a magas kockázatú besorolás alóli kimentéshez."
+    },
+    {
+      "@type": "Service",
+      "name": "Annex III felkészülési program",
+      "serviceType": "EU AI Act Annex III compliance preparation",
+      "provider": { "@id": "https://hu.spatiallogic.org/#organization" },
+      "areaServed": "HU",
+      "url": "https://hu.spatiallogic.org/?ut=annexiii",
+      "description": "Folyamatos méréstörténet felépítése a 2027.12.02-től kötelező Annex III felügyeleti követelményekhez."
+    },
+    {
+      "@type": "Service",
+      "name": "MNB 13/2025 megfelelőségi konzultáció",
+      "serviceType": "Banking AI oversight audit preparation",
+      "provider": { "@id": "https://hu.spatiallogic.org/#organization" },
+      "areaServed": "HU",
+      "url": "https://hu.spatiallogic.org/?ut=mnb",
+      "description": "Független audit és emberi felügyelet igazolása banki AI-rendszerekhez, MNB 13/2025 (XII.3.) alapján."
+    }
+  ]
+}
+</script>
 <style>
   :root {
     --bg: #fafafa;
@@ -285,6 +335,7 @@
   }
 
   .cta-btn {
+    display: inline-block;
     font-family: var(--font-body);
     font-weight: 600;
     font-size: 14.5px;
@@ -294,6 +345,7 @@
     border-radius: 10px;
     padding: 13px 22px;
     cursor: pointer;
+    text-decoration: none;
     box-shadow: 0 12px 24px -10px var(--shadow-color);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
@@ -350,7 +402,7 @@
     <div class="wrap hero-inner">
       <p class="eyebrow">Spatial Logic — Human Oversight Assessment</p>
       <h1>Nem azt kérdezzük, hogy használtok-e AI-t.<br>Azt mérjük, mikor veszítitek el fölötte a kontrollt.</h1>
-      <p class="hero-sub">Folyamatos, számszerűsíthető emberi felügyelet-mérés AI-rendszerekhez, mérnöki pontossággal, checklist helyett.</p>
+      <p class="hero-sub">Folyamatos, számszerűsíthető emberi felügyelet-mérés AI-rendszerekhez — mérnöki pontossággal, checklist helyett.</p>
       <div class="credential-strip">
         <span class="credential"><strong>r = 0,82</strong> — BME validáció</span>
         <span class="credential"><strong>EU AI Act</strong> — 14. cikk</span>
@@ -394,7 +446,7 @@
         <li>Nem nagyvállalati compliance-transzformáció kell hozzá, hanem egy gyors, alátámasztott döntés.</li>
       </ul>
       <div class="cta-row">
-        <button class="cta-btn">Kérek egy gyors assessment ajánlatot</button>
+        <a class="cta-btn" href="mailto:udeme@spatiallogic.org?subject=Grey-zone%20assessment%20%E2%80%94%20aj%C3%A1nlatk%C3%A9r%C3%A9s">Kérek egy gyors assessment ajánlatot</a>
         <span class="cta-note">Válasz 2 munkanapon belül</span>
       </div>
     </div>
@@ -409,7 +461,7 @@
         <li>Nem sürgetés — felkészülési előny egy olyan határidőre, ami biztosan jön.</li>
       </ul>
       <div class="cta-row">
-        <button class="cta-btn">Beszéljünk a felkészülésről</button>
+        <a class="cta-btn" href="mailto:udeme@spatiallogic.org?subject=Annex%20III%20felk%C3%A9sz%C3%BCl%C3%A9s%20%E2%80%94%20egyeztet%C3%A9s">Beszéljünk a felkészülésről</a>
         <span class="cta-note">Tanácsadói partnerünkön keresztül is elérhető</span>
       </div>
     </div>
@@ -424,7 +476,7 @@
         <li>Konkrét, technikai válasz egy banki compliance vezetőnek, nem márkanév-alapú érv.</li>
       </ul>
       <div class="cta-row">
-        <button class="cta-btn">Kérek egy MNB-megfelelőségi konzultációt</button>
+        <a class="cta-btn" href="mailto:udeme@spatiallogic.org?subject=MNB%2013%2F2025%20%E2%80%94%20megfelel%C5%91s%C3%A9gi%20konzult%C3%A1ci%C3%B3">Kérek egy MNB-megfelelőségi konzultációt</a>
         <span class="cta-note">Sensorless — meglévő telemetriából dolgozunk</span>
       </div>
     </div>
@@ -433,9 +485,9 @@
 
   <footer>
     <div class="wrap footer-grid">
-      <div><span>Validáció</span>BME · AI Symposium / Springer</div>
+      <div><span>Validáció</span>BME · AI Symposium · Springer</div>
       <div><span>Módszertan</span>Determinisztikus JSON Schema · auditálható, reprodukálható</div>
-      <div><span>Kapcsolat</span>Spatial Logic — ai.spatiallogic.org</div>
+      <div><span>Kapcsolat</span>Spatial Logic — hu.spatiallogic.org</div>
     </div>
   </footer>
 
@@ -481,4 +533,4 @@
 </script>
 
 </body>
-</html>
+  </html>
