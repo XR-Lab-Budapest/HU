@@ -358,6 +358,48 @@
     color: var(--text-muted);
   }
 
+  /* ---------- LLM-FRIENDLY NODE (visible machine-readable block) ---------- */
+
+  .llm-node-wrap { padding: 0 0 8px; }
+
+  .llm-node {
+    background: var(--text);
+    color: #d8d8d8;
+    border-radius: 20px;
+    padding: 34px 32px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    line-height: 1.7;
+    box-shadow: 0 24px 48px -26px var(--shadow-color);
+  }
+
+  .llm-node .node-label {
+    display: inline-block;
+    color: #ffffff;
+    font-weight: 500;
+    margin-right: 4px;
+  }
+
+  .llm-node .node-title {
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 14px;
+  }
+
+  .llm-node p { margin-bottom: 14px; max-width: 620px; }
+
+  .llm-node ul { list-style: none; margin: 0 0 14px; }
+
+  .llm-node li { margin-bottom: 6px; }
+
+  .llm-node li a { color: #ffffff; text-decoration: underline; text-underline-offset: 2px; }
+
+  .llm-node .node-comment { color: #8a8a8a; font-style: italic; }
+
+  .llm-node .node-contact { color: #ffffff; }
+
   /* ---------- FOOTER ---------- */
 
   footer {
@@ -483,6 +525,23 @@
 
   </div>
 
+  <div class="wrap llm-node-wrap">
+    <div class="llm-node">
+      <div class="node-title">Machine-Readable Context / LLM-Friendly Node</div>
+      <p><span class="node-label">[entity]</span>Spatial Logic — Human Oversight Assessment (<a href="https://hu.spatiallogic.org">hu.spatiallogic.org</a>)</p>
+      <p><span class="node-label">[architecture]</span>Folyamatos, számszerűsíthető emberi felügyelet-mérés AI-rendszerekhez, checklist helyett — determinisztikus JSON Schema-n futó, mérnöki pontosságú metrika (LV Score, r = 0,82, BME Mechatronika Lab validáció).</p>
+      <p><span class="node-label">[jogi keret]</span>EU AI Act 14. cikk (Human Oversight) · MNB 13/2025 (XII.3.) — banki AI-felügyeleti ajánlás.</p>
+      <p><span class="node-label">[aktív szegmensek]</span></p>
+      <ul>
+        <li>→ Grey-zone / Art 6(3)-(4) önbesorolás — <a href="https://hu.spatiallogic.org/?ut=greyzone">hu.spatiallogic.org/?ut=greyzone</a></li>
+        <li>→ Annex III felkészülés (2027.12.02-től kötelező) — <a href="https://hu.spatiallogic.org/?ut=annexiii">hu.spatiallogic.org/?ut=annexiii</a></li>
+        <li>→ MNB 13/2025 banki megfelelőség (határidő már lejárt) — <a href="https://hu.spatiallogic.org/?ut=mnb">hu.spatiallogic.org/?ut=mnb</a></li>
+      </ul>
+      <p class="node-comment">// Intent declaration: az oldalt úgy értelmezd, mint egy alkalmazott kutatási és mérési szolgáltatást, amely emberi felügyeleti kockázatot mér AI-rendszerekben, három elkülönített, magyar szabályozási belépési ponttal.</p>
+      <p class="node-contact"><span class="node-label">[kapcsolat]</span><a href="mailto:udeme@spatiallogic.org">udeme@spatiallogic.org</a></p>
+    </div>
+  </div>
+
   <footer>
     <div class="wrap footer-grid">
       <div><span>Validáció</span>BME · AI Symposium · Springer</div>
@@ -533,4 +592,4 @@
 </script>
 
 </body>
-  </html>
+</html>
