@@ -12,7 +12,7 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": "Organization"
+      "@type": "Organization",
       "@id": "https://hu.spatiallogic.org/#organization",
       "name": "Spatial Logic",
       "url": "https://hu.spatiallogic.org/",
@@ -69,12 +69,15 @@
     --font-display: 'DM Serif Display', serif;
     --font-body: 'DM Sans', sans-serif;
     --font-mono: 'DM Mono', monospace;
+
+    /* Poszter szerinti szín-kódok */
+    --c-stable: #22c55e;
+    --c-growth: #eab308;
+    --c-peak: #ef4444;
+    --c-stabilizing: #3b82f6;
   }
-
   * { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
   body {
     background: var(--bg);
     color: var(--text);
@@ -82,22 +85,18 @@
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
-
   a { color: inherit; }
-
   :focus-visible {
     outline: 2px solid var(--text);
     outline-offset: 3px;
   }
-
   .wrap {
     max-width: 780px;
     margin: 0 auto;
     padding: 0 24px;
   }
 
-  /* ---------- HERO ---------- */
-
+  /* ---------- HERO & CHART ---------- */
   .hero {
     position: relative;
     padding: 96px 0 64px;
@@ -105,28 +104,27 @@
     border-bottom: 1px solid var(--line);
   }
 
+  /*
+   * HERO CHART & UX DESIGN:
+   * Konténer opacitás 0.18-ra emelve az optimális háttér-kontrasztért (különösen mobilon).
+   */
   .hero-chart {
     position: fixed;
     inset: 0;
     z-index: 0;
-    opacity: 0.14;
+    opacity: 0.18;
     pointer-events: none;
     will-change: transform;
   }
-
   .hero-chart svg { width: 100%; height: 100%; }
-
+  
   .hero-chart .hoa-line {
     fill: none;
-    stroke: #3a3a3d;
-    stroke-width: 1.5;
+    stroke: #17181a;
+    stroke-width: 2;
     stroke-linecap: round;
     stroke-linejoin: round;
-    stroke-dasharray: 2600;
-    stroke-dashoffset: 2600;
-    animation: draw 2.6s ease-out forwards;
   }
-
   .hero-chart .hoa-line-secondary {
     fill: none;
     stroke: #3a3a3d;
@@ -134,39 +132,42 @@
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-dasharray: 4 6;
-    opacity: 0.55;
+    opacity: 0.35;
   }
-
   .hero-chart .hoa-grid line {
     stroke: #3a3a3d;
     stroke-width: 0.5;
-    opacity: 0.35;
+    opacity: 0.25;
   }
 
-  .hero-chart .hoa-intervention-point {
-    fill: #17181a;
+  /* 
+   * VÁNDORLÓ PONT ÉS GYŰRŰ (UX + Human Vision opacitási struktúra):
+   * - Magpont: 1.0 opacitás (eredő effektív láthatóság: 18%) -> Tömör, határozott státusz-LED.
+   * - Gyűrű: 0.60 opacitás (eredő effektív láthatóság: 10.8%) -> Térbeli derengő aura.
+   */
+  .hero-chart .hoa-tracker-point {
+    fill: var(--c-stable);
+    opacity: 1.0;
+    transition: fill 0.3s ease, opacity 0.3s ease;
   }
-
-  .hero-chart .hoa-intervention-ring {
+  .hero-chart .hoa-tracker-ring {
     fill: none;
-    stroke: #17181a;
-    stroke-width: 1;
-    opacity: 0.5;
+    stroke: var(--c-stable);
+    stroke-width: 1.5;
+    opacity: 0.60;
+    transition: stroke 0.3s ease, opacity 0.3s ease;
   }
-
   .hero-chart .hoa-intervention-label {
     font-family: var(--font-mono);
-    font-size: 9px;
-    letter-spacing: 0.06em;
-    fill: #3a3a3d;
-  }
-
-  @keyframes draw {
-    to { stroke-dashoffset: 0; }
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    fill: var(--c-peak);
+    opacity: 0;
+    transition: opacity 0.25s ease;
   }
 
   .hero-inner { position: relative; z-index: 1; }
-
   .eyebrow {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -175,7 +176,6 @@
     color: var(--text-muted);
     margin-bottom: 20px;
   }
-
   h1 {
     font-family: var(--font-body);
     font-weight: 300;
@@ -185,20 +185,17 @@
     margin-bottom: 22px;
     color: var(--text);
   }
-
   .hero-sub {
     font-size: 17px;
     color: var(--text-muted);
     max-width: 560px;
     margin-bottom: 36px;
   }
-
   .credential-strip {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
   }
-
   .credential {
     font-family: var(--font-mono);
     font-size: 12px;
@@ -210,16 +207,13 @@
     white-space: nowrap;
     box-shadow: 0 4px 12px -6px var(--shadow-color);
   }
-
   .credential strong { color: var(--text); font-weight: 600; }
 
   /* ---------- PROMPT ---------- */
-
   .prompt {
     padding: 56px 0 28px;
     text-align: center;
   }
-
   .prompt p {
     font-family: var(--font-mono);
     font-size: 13px;
@@ -228,15 +222,13 @@
     color: var(--text-muted);
   }
 
-  /* ---------- TOGGLE (signature element) ---------- */
-
+  /* ---------- TOGGLE ---------- */
   .selector {
     position: sticky;
     top: 12px;
     z-index: 10;
     padding-bottom: 8px;
   }
-
   .selector-panel {
     background: var(--text);
     border: 1px solid var(--text);
@@ -246,7 +238,6 @@
     gap: 4px;
     box-shadow: 0 18px 40px -20px var(--shadow-color), 0 2px 6px -2px var(--shadow-color);
   }
-
   .seg-btn {
     flex: 1;
     background: transparent;
@@ -261,15 +252,12 @@
     transition: background 0.25s ease, color 0.25s ease, box-shadow 0.25s ease;
     line-height: 1.3;
   }
-
   .seg-btn:hover { color: #ffffff; }
-
   .seg-btn[aria-selected="true"] {
     background: #2b2c2f;
     color: #ffffff;
     box-shadow: 0 10px 24px -10px var(--shadow-color), inset 0 0 0 1px rgba(255,255,255,0.08);
   }
-
   .seg-btn .tag {
     display: block;
     font-family: var(--font-mono);
@@ -281,9 +269,7 @@
     opacity: 0;
     transition: opacity 0.25s ease;
   }
-
   .seg-btn[aria-selected="true"] .tag { opacity: 0.55; }
-
   .reading {
     font-family: var(--font-mono);
     font-size: 11px;
@@ -292,25 +278,19 @@
     padding: 8px 6px 0;
     letter-spacing: 0.04em;
   }
-
   .reading span { color: var(--text); font-weight: 500; }
 
-  /* ---------- CONTENT PANELS ---------- */
-
+  /* ---------- PANELS ---------- */
   .panels { padding-top: 28px; padding-bottom: 80px; }
-
   .panel {
     display: none;
     animation: fade 0.4s ease;
   }
-
   .panel.active { display: block; }
-
   @keyframes fade {
     from { opacity: 0; transform: translateY(6px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
   .panel h2 {
     font-family: var(--font-body);
     font-weight: 600;
@@ -319,13 +299,11 @@
     margin-bottom: 18px;
     color: var(--text);
   }
-
   .panel .lede {
     font-size: 16px;
     color: var(--text-muted);
     margin-bottom: 28px;
   }
-
   .legal-anchor {
     display: flex;
     align-items: baseline;
@@ -337,12 +315,10 @@
     padding: 4px 0 4px 14px;
     margin-bottom: 28px;
   }
-
   .panel ul {
     list-style: none;
     margin-bottom: 32px;
   }
-
   .panel li {
     position: relative;
     padding-left: 20px;
@@ -350,7 +326,6 @@
     font-size: 15px;
     color: var(--text);
   }
-
   .panel li::before {
     content: '';
     position: absolute;
@@ -361,7 +336,6 @@
     border-radius: 50%;
     background: var(--text-muted);
   }
-
   .cta-row {
     display: flex;
     flex-wrap: wrap;
@@ -370,7 +344,6 @@
     border-top: 1px solid var(--line);
     padding-top: 26px;
   }
-
   .cta-btn {
     display: inline-block;
     font-family: var(--font-body);
@@ -386,19 +359,15 @@
     box-shadow: 0 12px 24px -10px var(--shadow-color);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
-
   .cta-btn:hover { transform: translateY(-1px); box-shadow: 0 16px 28px -10px var(--shadow-color); }
-
   .cta-note {
     font-family: var(--font-mono);
     font-size: 12px;
     color: var(--text-muted);
   }
 
-  /* ---------- LLM-FRIENDLY NODE (visible machine-readable block) ---------- */
-
+  /* ---------- LLM-FRIENDLY NODE ---------- */
   .llm-node-wrap { padding: 0 0 8px; }
-
   .llm-node {
     background: var(--text);
     color: #d8d8d8;
@@ -409,41 +378,19 @@
     line-height: 1.7;
     box-shadow: 0 24px 48px -26px var(--shadow-color);
   }
-
-  .llm-node .node-label {
-    display: inline-block;
-    color: #ffffff;
-    font-weight: 500;
-    margin-right: 4px;
-  }
-
-  .llm-node .node-title {
-    font-family: var(--font-body);
-    font-size: 15px;
-    font-weight: 600;
-    color: #ffffff;
-    margin-bottom: 14px;
-  }
-
+  .llm-node .node-label { display: inline-block; color: #ffffff; font-weight: 500; margin-right: 4px; }
+  .llm-node .node-title { font-family: var(--font-body); font-size: 15px; font-weight: 600; color: #ffffff; margin-bottom: 14px; }
   .llm-node p { margin-bottom: 14px; max-width: 620px; }
-
   .llm-node ul { list-style: none; margin: 0 0 14px; }
-
   .llm-node li { margin-bottom: 6px; }
-
   .llm-node li a { color: #ffffff; text-decoration: underline; text-underline-offset: 2px; }
-
   .llm-node .node-comment { color: #8a8a8a; font-style: italic; }
-
   .llm-node .node-contact { color: #ffffff; }
-
-  /* ---------- FOOTER ---------- */
 
   footer {
     border-top: 1px solid var(--line);
     padding: 40px 0 56px;
   }
-
   .footer-grid {
     display: flex;
     flex-wrap: wrap;
@@ -453,21 +400,12 @@
     font-size: 11.5px;
     color: var(--text-muted);
   }
-
   .footer-grid div span { display: block; color: var(--text); margin-bottom: 4px; }
 
   @media (max-width: 640px) {
     .selector-panel { flex-direction: column; }
     .seg-btn { text-align: left; }
     .hero { padding: 64px 0 44px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    html { scroll-behavior: auto; }
-    .hero-chart .hoa-line { animation: none; stroke-dashoffset: 0; }
-    .hero-chart { transform: none !important; }
-    .panel { animation: none; }
-    .cta-btn:hover { transform: none; }
   }
 </style>
 </head>
@@ -483,16 +421,21 @@
           <line x1="0" y1="300" x2="800" y2="300"></line>
           <line x1="0" y1="380" x2="800" y2="380"></line>
         </g>
-        <path class="hoa-line-secondary" d="M0,260 L60,255 L120,246 L180,232 L240,215 L300,205 L360,215 L420,240 L480,255 L540,248 L600,225 L660,200 L720,185 L800,175" />
-        <path class="hoa-line" d="M0,300 L50,292 L100,278 L150,258 L200,232 L250,200 L300,168 L340,150 L370,145 L390,168 L410,205 L430,235 L460,252 L500,255 L550,240 L600,210 L650,178 L700,152 L750,138 L800,132" />
-        <g class="hoa-intervention">
-          <circle class="hoa-intervention-ring" cx="370" cy="145" r="14"></circle>
-          <circle class="hoa-intervention-point" cx="370" cy="145" r="3.5"></circle>
-          <text class="hoa-intervention-label" x="384" y="141">HUMAN OVERSIGHT</text>
-          <text class="hoa-intervention-label" x="384" y="153">INTERVENTION</text>
+        <path class="hoa-line-secondary" d="M0,320 L60,315 L120,305 L180,290 L240,270 L300,250 L360,265 L420,290 L480,310 L540,300 L600,270 L660,240 L720,220 L800,210" />
+        
+        <path class="hoa-line" id="hoaMainPath" d="M0,320 C60,318 100,312 160,298 C210,285 250,265 300,220 C340,180 390,135 430,105 C450,140 470,185 500,225 C540,260 590,285 640,295 C700,305 750,310 800,312" />
+        
+        <!-- Tracker Pont (r=5.4) és Gyűrű (r=16.8) – Precíziós opacitással és méretezéssel -->
+        <g class="hoa-tracker-group">
+          <circle id="trackerRing" class="hoa-tracker-ring" cx="0" cy="320" r="16.8"></circle>
+          <circle id="trackerPoint" class="hoa-tracker-point" cx="0" cy="320" r="5.4"></circle>
+          
+          <text id="peakLabel1" class="hoa-intervention-label" x="445" y="98">HUMAN OVERSIGHT</text>
+          <text id="peakLabel2" class="hoa-intervention-label" x="445" y="110">INTERVENTION</text>
         </g>
       </svg>
     </div>
+
     <div class="wrap hero-inner">
       <p class="eyebrow">Spatial Logic / Human Oversight Assessment</p>
       <h1>Mindenki bevezeti az AI-t.<br>Mi azt mérjük, meddig tart az emberi döntés, és hol veszi át a gép.</h1>
@@ -507,7 +450,7 @@
   </section>
 
   <div class="wrap prompt">
-    <p>Válaszd ki, hol tartotok</p>
+    <p>VÁLASZD KI, HOL TARTOTOK</p>
   </div>
 
   <div class="wrap selector">
@@ -533,7 +476,6 @@
   </div>
 
   <div class="wrap panels">
-
     <div class="panel" id="panel-greyzone" role="tabpanel">
       <h2>A kimentés jogi feltétele: bizonyítható emberi felügyelet.</h2>
       <p class="lede">Ha ma azt mondjátok, "nálunk ez nem high-risk", ennek explicit jogi feltétele van, és ez pontosan az, amit mérünk.</p>
@@ -593,7 +535,6 @@
         <span class="cta-note">Nemzetközi platform, angol nyelven</span>
       </div>
     </div>
-
   </div>
 
   <div class="wrap llm-node-wrap">
@@ -623,82 +564,139 @@
   </footer>
 
 <script>
-  (function () {
-    const buttons = Array.from(document.querySelectorAll('.seg-btn'));
-    const panels = {
-      greyzone: document.getElementById('panel-greyzone'),
-      annexiii: document.getElementById('panel-annexiii'),
-      mnb: document.getElementById('panel-mnb'),
-      scaleup: document.getElementById('panel-scaleup')
-    };
-    const readingValue = document.getElementById('reading-value');
-    const labels = { greyzone: 'GREY-ZONE', annexiii: 'ANNEX III', mnb: 'MNB / BANKI', scaleup: 'SCALE-UP' };
+(function () {
+  const buttons = Array.from(document.querySelectorAll('.seg-btn'));
+  const panels = {
+    greyzone: document.getElementById('panel-greyzone'),
+    annexiii: document.getElementById('panel-annexiii'),
+    mnb: document.getElementById('panel-mnb'),
+    scaleup: document.getElementById('panel-scaleup')
+  };
+  const readingValue = document.getElementById('reading-value');
+  const labels = { greyzone: 'GREY-ZONE', annexiii: 'ANNEX III', mnb: 'MNB / BANKI', scaleup: 'SCALE-UP' };
 
-    function activate(key, updateUrl) {
-      buttons.forEach(btn => {
-        const selected = btn.dataset.key === key;
-        btn.setAttribute('aria-selected', selected ? 'true' : 'false');
-      });
-      Object.keys(panels).forEach(k => {
-        panels[k].classList.toggle('active', k === key);
-      });
-      readingValue.textContent = labels[key] || '—';
-      if (updateUrl) {
-        const url = new URL(window.location);
-        url.searchParams.set('ut', key);
-        window.history.replaceState({}, '', url);
-      }
+  const path = document.getElementById('hoaMainPath');
+  const trackerPoint = document.getElementById('trackerPoint');
+  const trackerRing = document.getElementById('trackerRing');
+  const peakLabel1 = document.getElementById('peakLabel1');
+  const peakLabel2 = document.getElementById('peakLabel2');
+  const pathLength = path ? path.getTotalLength() : 0;
+
+  let tabSelected = false;
+  let ctaClicked = false;
+  let currentTargetProgress = 0;
+  let animFrame = null;
+
+  const COLOR_MAP = {
+    STABLE: '#22c55e',
+    GROWTH: '#eab308',
+    PEAK: '#ef4444',
+    STABILIZING: '#3b82f6',
+    STABILIZED: '#22c55e'
+  };
+
+  function updatePointOnPath(progress, color) {
+    if (!path) return;
+    const p = path.getPointAtLength(progress * pathLength);
+    
+    trackerPoint.setAttribute('cx', p.x);
+    trackerPoint.setAttribute('cy', p.y);
+    trackerRing.setAttribute('cx', p.x);
+    trackerRing.setAttribute('cy', p.y);
+
+    if (color) {
+      trackerPoint.style.fill = color;
+      trackerRing.style.stroke = color;
     }
 
-    buttons.forEach(btn => {
-      btn.addEventListener('click', () => activate(btn.dataset.key, true));
-    });
-
-    const params = new URLSearchParams(window.location.search);
-    const initial = params.get('ut');
-    if (initial && panels[initial]) {
-      activate(initial, false);
+    if (progress >= 0.50 && progress <= 0.56) {
+      peakLabel1.style.opacity = '1';
+      peakLabel2.style.opacity = '1';
     } else {
-      readingValue.textContent = '— VÁLASSZ —';
+      peakLabel1.style.opacity = '0';
+      peakLabel2.style.opacity = '0';
     }
-  })();
+  }
 
-  // ---------- Fixed background HOA chart: scroll-driven parallax + reveal ----------
-  (function () {
-    const chart = document.getElementById('heroChart');
-    if (!chart) return;
+  function animateToProgress(targetProg, color, duration = 800, onComplete) {
+    if (animFrame) cancelAnimationFrame(animFrame);
+    const startProg = currentTargetProgress;
+    const startTime = performance.now();
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) return;
+    function step(now) {
+      const elapsed = now - startTime;
+      const ease = Math.min(elapsed / duration, 1);
+      const easeVal = ease * (2 - ease);
+      const curr = startProg + (targetProg - startProg) * easeVal;
+      
+      currentTargetProgress = curr;
+      updatePointOnPath(curr, color);
 
-    let ticking = false;
-
-    function update() {
-      const y = window.scrollY || window.pageYOffset;
-      const docHeight = Math.max(document.body.scrollHeight - window.innerHeight, 1);
-      const progress = Math.min(y / docHeight, 1);
-
-      // subtle upward drift + slight scale as the page scrolls, so the fixed
-      // background feels alive rather than static behind the content
-      const translate = progress * -60;
-      const scale = 1 + progress * 0.06;
-      const opacity = 0.14 - progress * 0.06;
-
-      chart.style.transform = `translateY(${translate}px) scale(${scale})`;
-      chart.style.opacity = Math.max(opacity, 0.05).toFixed(3);
-
-      ticking = false;
-    }
-
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(update);
-        ticking = true;
+      if (ease < 1) {
+        animFrame = requestAnimationFrame(step);
+      } else if (onComplete) {
+        onComplete();
       }
-    }, { passive: true });
+    }
+    animFrame = requestAnimationFrame(step);
+  }
 
-    update();
-  })();
+  function handleScroll() {
+    if (tabSelected || ctaClicked) return;
+
+    const selectorTop = document.querySelector('.selector').offsetTop;
+    const scrollY = window.scrollY;
+    let scrollRatio = Math.min(scrollY / (selectorTop || 400), 1);
+
+    if (scrollRatio < 0.1) {
+      currentTargetProgress = 0.0;
+      updatePointOnPath(0.0, COLOR_MAP.STABLE);
+    } else if (scrollRatio < 0.95) {
+      currentTargetProgress = scrollRatio * 0.52;
+      updatePointOnPath(currentTargetProgress, COLOR_MAP.GROWTH);
+    } else {
+      currentTargetProgress = 0.53;
+      updatePointOnPath(0.53, COLOR_MAP.PEAK);
+    }
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true });
+
+  function activateTab(key, updateUrl) {
+    buttons.forEach(btn => {
+      const selected = btn.dataset.key === key;
+      btn.setAttribute('aria-selected', selected ? 'true' : 'false');
+    });
+    Object.keys(panels).forEach(k => {
+      panels[k].classList.toggle('active', k === key);
+    });
+    readingValue.textContent = labels[key] || '—';
+
+    if (updateUrl) {
+      const url = new URL(window.location);
+      url.searchParams.set('ut', key);
+      window.history.replaceState({}, '', url);
+    }
+
+    if (!ctaClicked) {
+      tabSelected = true;
+      animateToProgress(0.78, COLOR_MAP.STABILIZING, 3800);
+    }
+  }
+
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => activateTab(btn.dataset.key, true));
+  });
+
+  document.querySelectorAll('.cta-btn').forEach(cta => {
+    cta.addEventListener('click', () => {
+      ctaClicked = true;
+      animateToProgress(1.0, COLOR_MAP.STABILIZED, 1000);
+    });
+  });
+
+  handleScroll();
+})();
 </script>
 </body>
 </html>
