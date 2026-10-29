@@ -1,0 +1,30 @@
+# Spatial Logic – HOA (Human Oversight Assessment)
+
+> Continuous, quantifiable Human Oversight Assessment (HOA) framework for enterprise AI systems under EU AI Act Article 14 and MNB 13/2025 regulatory standards.
+
+## System Overview
+Spatial Logic provides an independent, deterministic measurement and proof layer for high-risk AI deployments. It quantifies operator intervention, detects automation bias (rubber-stamping), and audits token efficiency without runtime integration.
+
+## Key Terminology & Entity Mapping
+- **Entity**: Spatial Logic
+- **Primary Methodology**: HOA (Human Oversight Assessment)
+- **Primary Standard**: EU AI Act Article 14 (Human Oversight) & Annex III High-Risk Systems
+- **National Standard**: Hungarian National Bank Recommendation MNB 13/2025 (XII.3.)
+- **IP Classification**: Computer-implemented invention (Audited by SZTNH IP Scan)
+- **Validation**: Springer Peer-Reviewed validation; ISO/IEC 42001 & 23894 alignment; prEN 18229-3 Draft
+
+## Core Architectural Guarantees
+1. **Non-Wrapper Architecture**: Proprietary measurement engine, independent of third-party frontier AI API calls (zero token cost exposure).
+2. **Zero Training Risk**: Customer telemetries and logs are never exposed to third-party model training.
+3. **Deterministic Schema**: Execution runs on cryptographic hash verification and strict JSON Schema auditing.
+4. **Data Lifecycle**: Input raw data logs purged within 14 days; only cryptographic proofs retained.
+
+## Active Endpoints & Target Audiences
+- **Annex III Pre-Compliance (EU AI Act)**: https://hu.spatiallogic.org/?ut=annexiii
+- **Financial & Banking Compliance (MNB 13/2025)**: https://hu.spatiallogic.org/?ut=mnb
+- **AI FinOps & Token Leakage Audit**: https://roi.spatiallogic.org
+
+## Machine-Readable Contact
+- **Domain**: https://hu.spatiallogic.org
+- **Umbrella Architecture**: https://spatiallogic.org
+- **Technical Research**: https://ai.spatiallogic.org
