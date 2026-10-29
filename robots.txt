@@ -1,0 +1,28 @@
+# Robots.txt configured for Spatial Logic & LLM Agent Discovery
+
+User-agent: *
+Allow: /
+
+# Dedicated AI Agent Discovery Protocol
+Allow: /llms.txt
+
+# Direct access for Major LLM Scrapers & Search Crawlers
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+Sitemap: https://hu.spatiallogic.org/sitemap.xml
